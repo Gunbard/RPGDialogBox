@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>RPG Dialog Box</title>
+        <link rel="stylesheet" href="./index.css">
+        <script src="./typewriter.js"></script>
+        <script src="./app.js"></script>
+    </head>
+    <body>
+        <div id="mainContent">
+            <div id="controlsContainer">
+                Width: <input type="range" min="16" max="800" value="400" class="SliderSize" id="rangeWidth"><br>
+                Height: <input type="range" min="16" max="600" value="100" class="SliderSize" id="rangeHeight"><br>
+                Dialog text:<br>
+                <textarea id="dialogInput" rows="4" cols="30"></textarea><br>
+                <input type="button" value="Update" id="buttonUpdate">
+                <input type="button" value="Reset" id="buttonReset">
+            </div>
+            
+            <br><br>
+            
+            <div id="dialogContainer">
+                <div id="mainDialog"></div>
+            </div>
+        </div>
+    </body>
+</html>

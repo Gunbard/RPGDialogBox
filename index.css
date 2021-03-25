@@ -1,0 +1,20 @@
+#mainDialog {
+  background-clip: padding-box;
+  background-color: dodgerblue;
+  border-width: 16px;
+  border-style: solid;
+  border-image: url("border.gif");
+  border-image-repeat: stretch;
+  border-image-slice: 8;
+  color: white;
+  font-family: 'Trebuchet MS', sans-serif;
+  font-size: larger;
+  image-rendering: crisp-edges;
+  padding: 4px;
+  text-shadow: 2px 2px 1px #000000;
+}
+
+#dialogContainer {
+  background-color: greenyellow;
+  padding: 100px;
+}
