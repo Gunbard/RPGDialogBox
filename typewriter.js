@@ -42,7 +42,7 @@ class Typewriter {
     this.widthTestCanvas = document.createElement("canvas");
 
     // Method bindings
-    this.calculateTextWidth = this.calculateTextWidth.bind(this);
+    this.calculateTextSize = this.calculateTextSize.bind(this);
     this.start = this.start.bind(this);
     this.clear = this.clear.bind(this);
     this.update = this.update.bind(this);
@@ -51,16 +51,16 @@ class Typewriter {
   } 
 
   /**
-   * Uses a canvas to calculate the width of a string using the container's font.
+   * Uses a canvas to calculate the dimensions of a string using the container's font.
    * @param text {String} The string to calculate.
-   * @returns {Number} The width of the text. 
+   * @returns {Object} The metrics of the text. 
    **/
-  calculateTextWidth(text) {
+  calculateTextSize(text) {
     const containerStyle = window.getComputedStyle(this.container);
     let context = this.widthTestCanvas.getContext("2d");
     context.font = containerStyle.fontSize + ' ' + containerStyle.fontFamily;
     let metrics = context.measureText(text);
-    return metrics.width;
+    return metrics;
   }
 
   /**
@@ -95,16 +95,17 @@ class Typewriter {
         }
         this.lineOffset = this.currentCharIndex += skipChars + 1;
       } else if (currentChar === ' ') {
-        // If on a whitespace character, perform scan-ahead to determine if next word will fit on line
-        
-        // Get next word starting from the next character until another space is found or the end of the text
+        // If on a whitespace character, perform scan-ahead to determine if next word will fit on line.
+        // Get next word starting from the next character until another space/linebreak is found or the end of the text
         while (this.fullText.charAt(this.currentCharIndex + skipChars + 1) != ' ' && 
+               this.fullText.charAt(this.currentCharIndex + skipChars + 1) != '<' &&       
                this.currentCharIndex + skipChars < this.fullText.length) {
           skipChars += 1;
         }
         // Test including the next word to see if it fits
-        let textWidth = this.calculateTextWidth(this.fullText.substring(this.lineOffset, this.currentCharIndex + skipChars));
-        const containerWidth = this.container.style.width.split('px')[0];
+        let textWidth = this.calculateTextSize(
+          this.fullText.substring(this.lineOffset, this.currentCharIndex + skipChars + 1)).width;
+        const containerWidth = this.container.clientWidth;
         if (textWidth >= parseInt(containerWidth) - TW_LINE_END_PADDING) {
           // Insert a <br> tag and skip those chars
           this.fullText = 

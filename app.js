@@ -8,19 +8,23 @@ const main = () => {
   const mainDialog = document.getElementById("mainDialog");  
   const typewriter = new Typewriter(mainDialog);
 
-  const openDialogBox = (text, callback) => {
-    typewriter.clear();
-
+  const resetAnimation = (animationName) => {
     const dialogBox = document.getElementsByClassName("animateScale")[0];
     dialogBox.style.animation = 'none';
     dialogBox.offsetHeight; // Trigger reflow
     dialogBox.style.animation = null; 
-    dialogBox.style.animationName = 'openScale';
+    dialogBox.style.animationName = animationName;
+  };
+
+  const openDialogBox = (text, callback) => {
+    typewriter.clear();
 
     const hideCheckbox = document.getElementById("checkboxHide");
     if (hideCheckbox.checked) {
       hideCheckbox.click();
     }
+
+    resetAnimation('openScale');
 
     dialogAnimationCallback = () => {
       if (callback) {
@@ -37,12 +41,7 @@ const main = () => {
 
   const closeDialogBox = (callback) => {
     typewriter.clear();
-
-    const dialogBox = document.getElementsByClassName("animateScale")[0];
-    dialogBox.style.animation = 'none';
-    dialogBox.offsetHeight; // Trigger reflow
-    dialogBox.style.animation = null; 
-    dialogBox.style.animationName = 'closeScale';
+    resetAnimation('closeScale');
 
     dialogAnimationCallback = () => {
       if (callback) {
@@ -134,6 +133,7 @@ const main = () => {
   reopenCheckbox.onclick = (event) => {
     reopenOnInput = event.target.checked;
   };
+  reopenOnInput = reopenCheckbox.checked;
 };
 
 window.addEventListener('DOMContentLoaded', (event) => {

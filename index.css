@@ -1,4 +1,5 @@
 body {
+  background-color: greenyellow;
   font-family:'Franklin Gothic Medium', 'sans-serif';
 }
 
@@ -15,16 +16,14 @@ body {
   font-size: x-large;
   image-rendering: crisp-edges;
   padding: 4px;
-  text-shadow: 2px 2px 1px #000000;
+  text-shadow: 2px 2px 1px black;
 }
 
 #dialogContainer {
-  background-color: greenyellow;
   padding: 100px;
 }
 
 .animateScale {
-  animation-delay: 10ms;
   animation-duration: 200ms;
   animation-name: openScale;
 }
