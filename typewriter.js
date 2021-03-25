@@ -1,24 +1,60 @@
-const LINE_END_PADDING = 16;
+/**
+ * Typewriter Text
+ * Author: Gunbard 
+ * Usage: const someTypewriter = new Typewriter(someHTMLElementContainer);
+ *        someTypewriter.start("Some text to show.");
+ **/
+
+// Arbitrary padding at the end of a line to ensure full words are sent to the 
+// next line if they don't fit
+const TW_LINE_END_PADDING = 16; // Pixels
+
+// Timeout delay for typing the chars. Lower = faster.
+const TW_CHAR_DELAY = 30; // Milliseconds
 
 class Typewriter {
-  constructor(container, options) {
+  /**
+   * @constructor
+   * @param container {HTML DOM Element} The DOM element to dump text into via innerHTML 
+   **/
+  constructor(container) {
     this.container = container;
-    this.options = options;
+    
+    // The current index for the cursor
     this.currentCharIndex = 0;
-    this.charDelay = 30; // Milliseconds
+
+    // Unmodified version of the full text. Used for resetting.
     this.originalText = "";
+
+    // Modifiable/working-copy version of the text to be displayed.
     this.fullText = this.originalText;
+
+    // The actual text that will display
     this.text = "";
+
+    // Index offset for the current line being written. Used for text width checking.
     this.lineOffset = 0;
 
+    // Array of paged text (todo)
+    this.lines = [];
+
+    // Instance of a canvas element. Used for text width calculation.
     this.widthTestCanvas = document.createElement("canvas");
+
+    // Method bindings
     this.calculateTextWidth = this.calculateTextWidth.bind(this);
     this.start = this.start.bind(this);
+    this.clear = this.clear.bind(this);
     this.update = this.update.bind(this);
     this.reset = this.reset.bind(this);
     this.stop = this.stop.bind(this);
   } 
 
+  /**
+   * Uses a canvas to calculate the width of a string using the container's font.
+   * @param text {String} The string to calculate.
+   * @returns {Number} The width of the text. 
+   **/
   calculateTextWidth(text) {
     const containerStyle = window.getComputedStyle(this.container);
     let context = this.widthTestCanvas.getContext("2d");
@@ -27,6 +63,10 @@ class Typewriter {
     return metrics.width;
   }
 
+  /**
+   * Begins typing text into the container.
+   * @param text {String} The text to show.
+   **/
   start(text) {
     text = text || "";
     this.currentCharIndex = 0;
@@ -36,9 +76,12 @@ class Typewriter {
     this.text = "";
     
     this.stop();
-    this.interval = setInterval(this.update, this.charDelay);
+    this.interval = setInterval(this.update, TW_CHAR_DELAY);
   }
 
+  /**
+   * Updates the displayed text. Consumers should not call this directly. 
+   **/
   update() {
     if (this.currentCharIndex < this.fullText.length) {
       let skipChars = 0;
@@ -62,14 +105,13 @@ class Typewriter {
         // Test including the next word to see if it fits
         let textWidth = this.calculateTextWidth(this.fullText.substring(this.lineOffset, this.currentCharIndex + skipChars));
         const containerWidth = this.container.style.width.split('px')[0];
-        if (textWidth >= parseInt(containerWidth) - LINE_END_PADDING) {
+        if (textWidth >= parseInt(containerWidth) - TW_LINE_END_PADDING) {
           // Insert a <br> tag and skip those chars
           this.fullText = 
             this.fullText.substring(0, this.currentCharIndex) + '<br>' + this.fullText.substr(this.currentCharIndex);
           this.lineOffset = this.currentCharIndex += 4 + 1;
         }
       }
-
 
       this.text = this.fullText.substring(0, this.currentCharIndex);
     } else {
@@ -79,6 +121,17 @@ class Typewriter {
     this.container.innerHTML = this.text;
   }
 
+  /**
+   * Removes any text from the container immediately.
+   **/
+  clear() {
+    this.container.innerHTML = "";
+    this.stop();
+  }
+
+  /**
+   * Restarts typing 
+   **/
   reset() {
     this.stop();
     this.currentCharIndex = 0;
@@ -86,6 +139,9 @@ class Typewriter {
     this.start(this.originalText);
   }
 
+  /**
+   * Stops typing
+   **/
   stop() {
     clearInterval(this.interval);
     console.log("Typing stopped.");

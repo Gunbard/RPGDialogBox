@@ -19,13 +19,18 @@
                 <input type="button" value="Update" id="buttonUpdate">
                 <input type="button" value="Reset" id="buttonReset">
                 <input type="button" value="Clear" id="buttonClear">
-                <input type="checkbox" id="checkboxHide">Hide</input>
+                <input type="button" value="Open" id="buttonOpen">
+                <input type="button" value="Close" id="buttonClose">
+
+                <label><input type="checkbox" id="checkboxHide">Hide</label>
+                <label><input type="checkbox" id="checkboxReopen">Reopen on new text</label>
+
             </div>
             
             <br><br>
             
             <div id="dialogContainer">
-                <div id="mainDialog"></div>
+                <div id="mainDialog" class="animateScale"></div>
             </div>
         </div>
     </body>

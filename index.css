@@ -1,3 +1,7 @@
+body {
+  font-family:'Franklin Gothic Medium', 'sans-serif';
+}
+
 #mainDialog {
   background-clip: padding-box;
   background-color: dodgerblue;
@@ -17,4 +21,34 @@
 #dialogContainer {
   background-color: greenyellow;
   padding: 100px;
+}
+
+.animateScale {
+  animation-delay: 10ms;
+  animation-duration: 200ms;
+  animation-name: openScale;
+}
+
+@keyframes openScale {
+  from {
+    height: 16px;
+    width: 16px;
+  }
+
+  to {
+    height: var(--dialogHeight, 100px);
+    width: var(--dialogWidth, 100px);
+  }
+}
+
+@keyframes closeScale {
+  to {
+    height: 16px;
+    width: 16px;
+  }
+
+  from {
+    height: var(--dialogHeight, 100px);
+    width: var(--dialogWidth, 100px);
+  }
 }
