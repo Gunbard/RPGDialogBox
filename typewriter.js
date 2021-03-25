@@ -28,12 +28,12 @@ class Typewriter {
   }
 
   start(text) {
-    if (text && text.length > 0) {
-      this.currentCharIndex = 0;
-      this.lineOffset = 0;
-      this.originalText = text;
-      this.fullText = text;
-    }
+    text = text || "";
+    this.currentCharIndex = 0;
+    this.lineOffset = 0;
+    this.originalText = text;
+    this.fullText = text;
+    this.text = "";
     
     this.stop();
     this.interval = setInterval(this.update, this.charDelay);
@@ -83,8 +83,7 @@ class Typewriter {
     this.stop();
     this.currentCharIndex = 0;
     this.lineOffset = 0;
-    this.fullText = this.originalText;
-    this.start();
+    this.start(this.originalText);
   }
 
   stop() {

@@ -16,6 +16,14 @@ const main = () => {
     };
   }
 
+  const quickTextInput = document.getElementById("inputQuick");
+  quickTextInput.onkeypress = (event) => {
+    if (event.key === "Enter") {
+      typewriter.start(event.target.value);
+      event.target.value = ""; // Clear input
+    }
+  };
+
   const dialogInput = document.getElementById("dialogInput");
   
   const resetButton = document.getElementById("buttonReset");
@@ -26,10 +34,18 @@ const main = () => {
   const updateButton = document.getElementById("buttonUpdate");
   updateButton.onclick = () => {
     const newText = dialogInput.value.replace(/\r?\n/g, '<br>'); // Convert newlines in textarea
-    if (newText.length > 0) {
-      typewriter.start(newText);
-    }
+    typewriter.start(newText);
   };
+  
+  const clearButton = document.getElementById("buttonClear");
+  clearButton.onclick = () => {
+    typewriter.start("");
+  };  
+
+  const hideCheckbox = document.getElementById("checkboxHide");
+  hideCheckbox.onclick = (event) => {
+    mainDialog.style.visibility = event.target.checked ? "hidden" : "visible";
+  }
 
   typewriter.start("?????:<br>This is some pretty long text dialogue. It shouldn't be this long, but you never know, I guess.");
 };
