@@ -12,14 +12,23 @@ const TW_LINE_END_PADDING = 16; // Pixels
 // Timeout delay for typing the chars. Lower = faster.
 const TW_CHAR_DELAY = 30; // Milliseconds
 
+const TW_STATE = {
+  TYPING: 0,
+  STOPPED: 1,
+  FINISHED: 2
+};
+
 class Typewriter {
   /**
    * @constructor
    * @param container {HTML DOM Element} The DOM element to dump text into via innerHTML 
    **/
-  constructor(container) {
+  constructor(container, eventCallback) {
     this.container = container;
     
+    // Current state
+    this.state = TW_STATE.STOPPED;
+
     // The current index for the cursor
     this.currentCharIndex = 0;
 
@@ -35,19 +44,29 @@ class Typewriter {
     // Index offset for the current line being written. Used for text width checking.
     this.lineOffset = 0;
 
-    // Array of paged text (todo)
+    // Array of paged text
     this.lines = [];
+
+    // Index of current page
+    this.currentLine = 0;
 
     // Instance of a canvas element. Used for text width calculation.
     this.widthTestCanvas = document.createElement("canvas");
 
+    // Callback invoked on events
+    // @param {Object} Event object metadata {state: TW_STATE}
+    this.eventCallback = eventCallback;
+
     // Method bindings
     this.calculateTextSize = this.calculateTextSize.bind(this);
     this.start = this.start.bind(this);
+    this.nextPage = this.nextPage.bind(this);
     this.clear = this.clear.bind(this);
     this.update = this.update.bind(this);
     this.reset = this.reset.bind(this);
     this.stop = this.stop.bind(this);
+    this.finish = this.finish.bind(this);
+    this.notifyEventCallback = this.notifyEventCallback.bind(this);
   } 
 
   /**
@@ -69,14 +88,22 @@ class Typewriter {
    **/
   start(text) {
     text = text || "";
+
+    if (Array.isArray(text)) {
+      this.lines = text;
+      text = text[0];
+    }
+    
     this.currentCharIndex = 0;
     this.lineOffset = 0;
     this.originalText = text;
     this.fullText = text;
     this.text = "";
-    
-    this.stop();
+
+    clearInterval(this.interval);
     this.interval = setInterval(this.update, TW_CHAR_DELAY);
+    this.state = TW_STATE.TYPING;
+    this.notifyEventCallback();
   }
 
   /**
@@ -122,22 +149,39 @@ class Typewriter {
     this.container.innerHTML = this.text;
   }
 
+  nextPage() {
+    if (this.state === TW_STATE.STOPPED) {
+      if (this.currentLine < this.lines.length - 1) {
+        this.currentLine += 1;
+        this.start(this.lines[this.currentLine]);
+      } else {
+        this.finish();
+      }
+    }
+  }
+
   /**
    * Removes any text from the container immediately.
    **/
   clear() {
     this.container.innerHTML = "";
-    this.stop();
+    clearInterval(this.interval);
   }
 
   /**
    * Restarts typing 
    **/
   reset() {
-    this.stop();
+    clearInterval(this.interval);
     this.currentCharIndex = 0;
     this.lineOffset = 0;
-    this.start(this.originalText);
+
+    if (this.lines.length > 0) {
+      this.currentLine = 0;
+      this.start(this.lines);
+    } else {
+      this.start(this.originalText);
+    }
   }
 
   /**
@@ -145,6 +189,23 @@ class Typewriter {
    **/
   stop() {
     clearInterval(this.interval);
-    console.log("Typing stopped.");
+    this.state = TW_STATE.STOPPED;
+    this.notifyEventCallback();
+  }
+
+  /**
+   * All lines have been displayed
+   */
+  finish() {
+    this.currentLine = 0;
+    this.lines = [];
+    this.state = TW_STATE.FINISHED;
+    this.notifyEventCallback();
+  }
+
+  notifyEventCallback() {
+    if (this.eventCallback) {
+      this.eventCallback({state: this.state});
+    }
   }
 }

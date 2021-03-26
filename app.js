@@ -4,9 +4,24 @@ const main = () => {
   }; 
 
   let reopenOnInput = false;
+  let pageOnNewlines = false;
+  let closeOnLastPage = false;
 
+  const typewriterEventCallback = (event) => {
+    if (event.state === TW_STATE.FINISHED) {
+      if (closeOnLastPage) {
+        closeDialogBox();
+      }
+    }
+  };
+
+  const dialogContainer = document.getElementById("dialogContainer");
   const mainDialog = document.getElementById("mainDialog");  
-  const typewriter = new Typewriter(mainDialog);
+  const typewriter = new Typewriter(mainDialog, typewriterEventCallback);
+
+  dialogContainer.addEventListener('click', () => {
+    typewriter.nextPage();
+  });
 
   const resetAnimation = (animationName) => {
     const dialogBox = document.getElementsByClassName("animateScale")[0];
@@ -100,8 +115,12 @@ const main = () => {
 
   const updateButton = document.getElementById("buttonUpdate");
   updateButton.onclick = () => {
-    const newText = dialogInput.value.replace(/\r?\n/g, '<br>'); // Convert newlines in textarea
+    let newText = dialogInput.value.replace(/\r?\n/g, '<br>'); // Convert newlines in textarea
     
+    if (pageOnNewlines) {
+      newText = newText.split("<br><br>");
+    }
+
     if (reopenOnInput) {
       openDialogBox(newText);
     } else {
@@ -128,12 +147,25 @@ const main = () => {
   hideCheckbox.onclick = (event) => {
     mainDialog.style.visibility = event.target.checked ? "hidden" : "visible";
   }
+  mainDialog.style.visibility = hideCheckbox.checked ? "hidden" : "visible";
 
   const reopenCheckbox = document.getElementById("checkboxReopen");
   reopenCheckbox.onclick = (event) => {
     reopenOnInput = event.target.checked;
   };
   reopenOnInput = reopenCheckbox.checked;
+
+  const pagingCheckbox = document.getElementById("checkboxPaging");
+  pagingCheckbox.onclick = (event) => {
+    pageOnNewlines = event.target.checked;
+  };
+  pageOnNewlines = pagingCheckbox.checked;
+
+  const closeOnLastCheckbox = document.getElementById("checkboxCloseOnLast");
+  closeOnLastCheckbox.onclick = (event) => {
+    closeOnLastPage = event.target.checked;
+  };
+  closeOnLastPage = closeOnLastCheckbox.checked;
 };
 
 window.addEventListener('DOMContentLoaded', (event) => {
