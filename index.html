@@ -15,7 +15,7 @@
                 Height: <input type="range" min="16" max="600" value="100" class="SliderSize" id="rangeHeight"><br>
                 Quick text: <input type="text" id="inputQuick" size="50"><br>
                 Dialog text:<br>
-                <textarea id="dialogInput" rows="4" cols="30"></textarea><br>
+                <textarea id="dialogInput" rows="8" cols="50"></textarea><br>
                 <input type="button" value="Update" id="buttonUpdate">
                 <input type="button" value="Reset" id="buttonReset">
                 <input type="button" value="Clear" id="buttonClear">
@@ -24,13 +24,17 @@
                 <label><input type="checkbox" id="checkboxHide">Hide</label>
                 <label><input type="checkbox" id="checkboxReopen">Reopen on new text</label>
                 <label><input type="checkbox" id="checkboxPaging">Page on double newlines</label>
-                <label><input type="checkbox" id="checkboxCloseOnLast">Close on last line</label>
+                <label><input type="checkbox" id="checkboxCloseOnLast">Close on last line</label><br>
+                Click anywhere in box below to advance text.
             </div>
             
             <br><br>
             
-            <div id="dialogContainer">
-                <div id="mainDialog" class="animateScale"></div>
+            <div id="clickArea">
+                <div id="dialogContainer">
+                    <div id="mainDialog" class="animateScale"></div>
+                    <img src="moreText.gif" id="moreTextIcon">
+                </div>
             </div>
         </div>
     </body>

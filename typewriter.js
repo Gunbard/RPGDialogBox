@@ -3,15 +3,17 @@
  * Author: Gunbard 
  * Usage: const someTypewriter = new Typewriter(someHTMLElementContainer);
  *        someTypewriter.start("Some text to show.");
+ *        someTypewriter.start(["What did you say?", "How are you<br>doing?", "Whatever."]);
  **/
 
 // Arbitrary padding at the end of a line to ensure full words are sent to the 
 // next line if they don't fit
-const TW_LINE_END_PADDING = 16; // Pixels
+const TW_LINE_END_PADDING = 8; // Pixels
 
 // Timeout delay for typing the chars. Lower = faster.
 const TW_CHAR_DELAY = 30; // Milliseconds
 
+// Enum for typewriter state
 const TW_STATE = {
   TYPING: 0,
   STOPPED: 1,
@@ -84,7 +86,7 @@ class Typewriter {
 
   /**
    * Begins typing text into the container.
-   * @param text {String} The text to show.
+   * @param text {String|Array of strings} The text to show. Pass in array to page out text.
    **/
   start(text) {
     text = text || "";
@@ -149,6 +151,9 @@ class Typewriter {
     this.container.innerHTML = this.text;
   }
 
+  /**
+   * Starts next page if there are additional lines.
+   **/
   nextPage() {
     if (this.state === TW_STATE.STOPPED) {
       if (this.currentLine < this.lines.length - 1) {
@@ -165,11 +170,12 @@ class Typewriter {
    **/
   clear() {
     this.container.innerHTML = "";
+    this.lines = [];
     clearInterval(this.interval);
   }
 
   /**
-   * Restarts typing 
+   * Restarts typing.
    **/
   reset() {
     clearInterval(this.interval);
@@ -185,7 +191,7 @@ class Typewriter {
   }
 
   /**
-   * Stops typing
+   * Stops typing.
    **/
   stop() {
     clearInterval(this.interval);
@@ -194,7 +200,7 @@ class Typewriter {
   }
 
   /**
-   * All lines have been displayed
+   * All lines have been displayed.
    */
   finish() {
     this.currentLine = 0;
@@ -203,9 +209,15 @@ class Typewriter {
     this.notifyEventCallback();
   }
 
+  /**
+   * Invokes the event callback if it is set. 
+   **/
   notifyEventCallback() {
     if (this.eventCallback) {
-      this.eventCallback({state: this.state});
+      this.eventCallback({
+        state: this.state, 
+        lastPage: (this.lines.length === 0 || this.currentLine === this.lines.length - 1)
+      });
     }
   }
 }

@@ -14,21 +14,46 @@ body {
   color: white;
   font-family: 'Trebuchet MS', sans-serif;
   font-size: x-large;
+  font-smooth: never;
   image-rendering: crisp-edges;
   padding: 4px;
   text-shadow: 2px 2px 1px black;
 }
 
-#dialogContainer {
+#clickArea {
   border: 2px;
   border-color: black;
   border-style: solid;
-  padding: 100px;
+  padding: 50px;
+}
+
+#dialogContainer {
+  position: relative;
+  display: inline-block;
+}
+
+#moreTextIcon {
+  position: absolute;
+  left: calc(100% - 36px);
+  visibility: hidden;
+  animation-duration: 1s;
+  animation-name: moreTextIcon;
+  animation-iteration-count: infinite;
 }
 
 .animateScale {
   animation-duration: 200ms;
   animation-name: openScale;
+}
+
+@keyframes moreTextIcon {
+  from {
+    top: calc(100% - 32px);
+  }
+
+  to {
+    top: calc(100% - 26px);
+  }
 }
 
 @keyframes openScale {

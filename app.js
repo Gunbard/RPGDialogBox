@@ -8,18 +8,46 @@ const main = () => {
   let closeOnLastPage = false;
 
   const typewriterEventCallback = (event) => {
-    if (event.state === TW_STATE.FINISHED) {
-      if (closeOnLastPage) {
-        closeDialogBox();
+    const moreTextIcon = document.getElementById("moreTextIcon");
+    switch (event.state) {
+      case TW_STATE.TYPING: {
+        moreTextIcon.style.visibility = "hidden";
+        break;
       }
+      case TW_STATE.STOPPED: {
+        moreTextIcon.style.visibility = event.lastPage ? "hidden" : "visible";
+        break;
+      }
+      case TW_STATE.FINISHED: {
+        if (closeOnLastPage) {
+          closeDialogBox();
+        }
+        break;
+      }
+      default:
     }
   };
 
-  const dialogContainer = document.getElementById("dialogContainer");
+  const clickArea = document.getElementById("clickArea");
+  const rangeWidth = document.getElementById("rangeWidth");
+  const rangeHeight = document.getElementById("rangeHeight");
   const mainDialog = document.getElementById("mainDialog");  
+  const moreTextIcon = document.getElementById("moreTextIcon");
   const typewriter = new Typewriter(mainDialog, typewriterEventCallback);
 
-  dialogContainer.addEventListener('click', () => {
+  const resizeDialogBox = (width, height) => {
+    if (width) {
+      mainDialog.style.width = width + "px";
+      mainDialog.style.setProperty('--dialogWidth', mainDialog.style.width);
+    }
+    
+    if (height) {
+      mainDialog.style.height = height + "px";
+      mainDialog.style.setProperty('--dialogHeight', mainDialog.style.height);
+    }
+  };
+
+  clickArea.addEventListener('click', () => {
     typewriter.nextPage();
   });
 
@@ -32,6 +60,7 @@ const main = () => {
   };
 
   const openDialogBox = (text, callback) => {
+    moreTextIcon.style.visibility = "hidden";
     typewriter.clear();
 
     const hideCheckbox = document.getElementById("checkboxHide");
@@ -55,6 +84,7 @@ const main = () => {
   }
 
   const closeDialogBox = (callback) => {
+    moreTextIcon.style.visibility = "hidden";
     typewriter.clear();
     resetAnimation('closeScale');
 
@@ -70,10 +100,8 @@ const main = () => {
     };
   }
 
-  mainDialog.style.width = document.getElementById("rangeWidth").value + "px";
-  mainDialog.style.height = document.getElementById("rangeHeight").value + "px";
-  mainDialog.style.setProperty('--dialogWidth', mainDialog.style.width);
-  mainDialog.style.setProperty('--dialogHeight', mainDialog.style.height);
+  resizeDialogBox(rangeWidth.value, rangeHeight.value);
+
   mainDialog.addEventListener('animationend', (event) => {
     if (dialogAnimationCallback) {
       dialogAnimationCallback();
@@ -82,15 +110,8 @@ const main = () => {
 
   const sizeSliders = document.getElementsByClassName("SliderSize");
   for (let slider of sizeSliders) {
-    slider.oninput = (event) => {
-      if (event.target.id === "rangeWidth") {
-        mainDialog.style.width = event.target.value + "px";
-      } else {
-        mainDialog.style.height = event.target.value + "px";
-      }
-
-      mainDialog.style.setProperty('--dialogWidth', mainDialog.style.width);
-      mainDialog.style.setProperty('--dialogHeight', mainDialog.style.height);
+    slider.oninput = () => {
+      resizeDialogBox(rangeWidth.value, rangeHeight.value);
     };
   }
 
@@ -100,6 +121,7 @@ const main = () => {
       if (reopenOnInput) {
         openDialogBox(event.target.value);
       } else {
+        typewriter.clear();
         typewriter.start(event.target.value);
       }
       event.target.value = ""; // Clear input
