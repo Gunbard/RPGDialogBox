@@ -3,6 +3,10 @@ body {
   font-family:'Franklin Gothic Medium', 'sans-serif';
 }
 
+input[type=button] {
+  padding: 10px;
+}
+
 #mainDialog {
   background-clip: padding-box;
   background-color: dodgerblue;
@@ -18,13 +22,6 @@ body {
   image-rendering: crisp-edges;
   padding: 4px;
   text-shadow: 2px 2px 1px black;
-}
-
-#clickArea {
-  border: 2px;
-  border-color: black;
-  border-style: solid;
-  padding: 50px;
 }
 
 #dialogContainer {

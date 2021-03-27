@@ -28,7 +28,6 @@ const main = () => {
     }
   };
 
-  const clickArea = document.getElementById("clickArea");
   const rangeWidth = document.getElementById("rangeWidth");
   const rangeHeight = document.getElementById("rangeHeight");
   const mainDialog = document.getElementById("mainDialog");  
@@ -46,10 +45,6 @@ const main = () => {
       mainDialog.style.setProperty('--dialogHeight', mainDialog.style.height);
     }
   };
-
-  clickArea.addEventListener('click', () => {
-    typewriter.nextPage();
-  });
 
   const resetAnimation = (animationName) => {
     const dialogBox = document.getElementsByClassName("animateScale")[0];
@@ -163,7 +158,12 @@ const main = () => {
   const closeButton = document.getElementById("buttonClose");
   closeButton.onclick = () => {
     closeDialogBox();
-  };  
+  };
+
+  const nextButton = document.getElementById("buttonNext");
+  nextButton.onclick = () => {
+    typewriter.nextPage();
+  }
 
   const hideCheckbox = document.getElementById("checkboxHide");
   hideCheckbox.onclick = (event) => {
