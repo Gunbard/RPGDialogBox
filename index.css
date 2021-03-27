@@ -1,3 +1,8 @@
+html, body {
+  height: 100%;
+  margin: 0px;
+}
+
 body {
   background-color: greenyellow;
   font-family:'Franklin Gothic Medium', 'sans-serif';
@@ -5,6 +10,22 @@ body {
 
 input[type=button] {
   padding: 10px;
+}
+
+.centerAlign {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50%;
+}
+
+#controlsContainer {
+  display: inline-block;
+  padding: 10px;
+}
+
+#mainContent {
+  height: 100%;
 }
 
 #mainDialog {
@@ -25,8 +46,8 @@ input[type=button] {
 }
 
 #dialogContainer {
-  position: relative;
   display: inline-block;
+  position: relative;
 }
 
 #moreTextIcon {
