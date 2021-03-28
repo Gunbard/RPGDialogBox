@@ -62,6 +62,7 @@ class Typewriter {
     // Method bindings
     this.calculateTextSize = this.calculateTextSize.bind(this);
     this.start = this.start.bind(this);
+    this.prevPage = this.prevPage.bind(this);
     this.nextPage = this.nextPage.bind(this);
     this.clear = this.clear.bind(this);
     this.update = this.update.bind(this);
@@ -69,6 +70,8 @@ class Typewriter {
     this.stop = this.stop.bind(this);
     this.finish = this.finish.bind(this);
     this.notifyEventCallback = this.notifyEventCallback.bind(this);
+    this.isOnFirstPage = this.isOnFirstPage.bind(this);
+    this.isOnLastPage = this.isOnLastPage.bind(this);
   } 
 
   /**
@@ -87,13 +90,20 @@ class Typewriter {
   /**
    * Begins typing text into the container.
    * @param text {String|Array of strings} The text to show. Pass in array to page out text.
+   * @param startAtLastLine {Boolean} Start text at the last line
    **/
-  start(text) {
+  start(text, startAtLastLine) {
     text = text || "";
 
     if (Array.isArray(text)) {
       this.lines = text;
-      text = text[0];
+      //text = startAtLastLine ? text[text.length - 1] : text[0];
+      if (startAtLastLine) {
+        this.currentLine = text.length - 1;
+        text = text[this.currentLine];
+      } else {
+        text = text[0];
+      }
     }
     
     this.currentCharIndex = 0;
@@ -149,6 +159,25 @@ class Typewriter {
     }
 
     this.container.innerHTML = this.text;
+  }
+  
+  /**
+   * Starts previous page
+   **/
+   prevPage() {
+    if (this.state === TW_STATE.STOPPED) {
+      if (this.currentLine > 0) {
+        if (this.currentLine === this.lines.length) { // On last page now
+          this.currentLine -= 1;
+          this.finish();
+        } else {
+          this.currentLine -= 1;
+          this.start(this.lines[this.currentLine]);
+        }
+      } else {
+        this.reset();
+      }
+    }
   }
 
   /**
@@ -216,8 +245,16 @@ class Typewriter {
     if (this.eventCallback) {
       this.eventCallback({
         state: this.state, 
-        lastPage: (this.lines.length === 0 || this.currentLine === this.lines.length - 1)
+        lastPage: this.isOnLastPage()
       });
     }
+  }
+
+  isOnFirstPage() {
+    return (this.lines.length === 0 || this.currentLine === 0);
+  }
+
+  isOnLastPage() {
+    return (this.lines.length === 0 || this.currentLine === this.lines.length - 1);
   }
 }

@@ -39,7 +39,6 @@ input[type=button] {
   color: white;
   font-family: 'Trebuchet MS', sans-serif;
   font-size: x-large;
-  font-smooth: never;
   image-rendering: crisp-edges;
   padding: 4px;
   text-shadow: 2px 2px 1px black;

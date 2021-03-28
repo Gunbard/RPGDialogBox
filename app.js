@@ -6,6 +6,8 @@ const main = () => {
   let reopenOnInput = false;
   let pageOnNewlines = false;
   let closeOnLastPage = false;
+  let dialogLines = [];
+  let currentDialogLine = 0;
 
   const typewriterEventCallback = (event) => {
     const moreTextIcon = document.getElementById("moreTextIcon");
@@ -26,6 +28,24 @@ const main = () => {
       }
       default:
     }
+  };
+
+  const dialogBox = (dialogText) => {
+
+    currentDialogLine = 0;
+
+    // Process dialog text
+    dialogText = dialogText.replaceAll("<br><new>", "<new>");
+    dialogLines = dialogText.split("<new>");
+
+    dialogLines = dialogLines.map((dialogLine) => {
+      return dialogLine.split("<br><br>");
+    });
+
+    // Close existing dialog box
+
+    // Open a new one and pass in processed dialog text
+    openDialogBox(dialogLines[currentDialogLine]);
   };
 
   const rangeWidth = document.getElementById("rangeWidth");
@@ -54,7 +74,7 @@ const main = () => {
     dialogBox.style.animationName = animationName;
   };
 
-  const openDialogBox = (text, callback) => {
+  const openDialogBox = (text, callback, startAtLastLine) => {
     moreTextIcon.style.visibility = "hidden";
     typewriter.clear();
 
@@ -71,7 +91,7 @@ const main = () => {
       }
 
       if (text) {
-        typewriter.start(text);
+        typewriter.start(text, startAtLastLine);
       } else {
         typewriter.reset();
       }
@@ -132,17 +152,8 @@ const main = () => {
 
   const updateButton = document.getElementById("buttonUpdate");
   updateButton.onclick = () => {
-    let newText = dialogInput.value.replace(/\r?\n/g, '<br>'); // Convert newlines in textarea
-    
-    if (pageOnNewlines) {
-      newText = newText.split("<br><br>");
-    }
-
-    if (reopenOnInput) {
-      openDialogBox(newText);
-    } else {
-      typewriter.start(newText);
-    }
+    let newText = dialogInput.value.replace(/\r?\n/g, "<br>"); // Convert newlines in textarea
+    dialogBox(newText);
   };
   
   const clearButton = document.getElementById("buttonClear");
@@ -160,11 +171,35 @@ const main = () => {
     closeDialogBox();
   };
 
+  const prevButton = document.getElementById("buttonPrev");
+  prevButton.onclick = () => {
+    if (typewriter.isOnFirstPage()) {
+      if (currentDialogLine > 0) {
+        currentDialogLine -= 1;
+      }
+      
+      openDialogBox(dialogLines[currentDialogLine], null, true);
+    } else {
+      typewriter.prevPage();
+    }
+  }
+  
   const nextButton = document.getElementById("buttonNext");
   nextButton.onclick = () => {
-    typewriter.nextPage();
+    if (typewriter.isOnLastPage()) {
+      typewriter.nextPage(); // Closes dialog box
+      if (currentDialogLine < dialogLines.length - 1) {
+        currentDialogLine += 1;
+        openDialogBox(dialogLines[currentDialogLine]);
+      } else {
+        dialogLines = [];
+        closeDialogBox();
+      }
+    } else {
+      typewriter.nextPage();
+    }
   }
-
+  
   const hideCheckbox = document.getElementById("checkboxHide");
   hideCheckbox.onclick = (event) => {
     mainDialog.style.visibility = event.target.checked ? "hidden" : "visible";
