@@ -4,7 +4,7 @@ html, body {
 }
 
 body {
-  background-color: greenyellow;
+  background-color: var(--backgroundColor, greenyellow);
   font-family:'Franklin Gothic Medium', 'sans-serif';
 }
 

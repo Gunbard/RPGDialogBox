@@ -31,8 +31,8 @@ const main = () => {
   };
 
   const dialogBox = (dialogText) => {
-
     currentDialogLine = 0;
+    typewriter.finish();
 
     // Process dialog text
     dialogText = dialogText.replaceAll("<br><new>", "<new>");
@@ -42,9 +42,6 @@ const main = () => {
       return dialogLine.split("<br><br>");
     });
 
-    // Close existing dialog box
-
-    // Open a new one and pass in processed dialog text
     openDialogBox(dialogLines[currentDialogLine]);
   };
 
@@ -57,12 +54,12 @@ const main = () => {
   const resizeDialogBox = (width, height) => {
     if (width) {
       mainDialog.style.width = width + "px";
-      mainDialog.style.setProperty('--dialogWidth', mainDialog.style.width);
+      mainDialog.style.setProperty("--dialogWidth", mainDialog.style.width);
     }
     
     if (height) {
       mainDialog.style.height = height + "px";
-      mainDialog.style.setProperty('--dialogHeight', mainDialog.style.height);
+      mainDialog.style.setProperty("--dialogHeight", mainDialog.style.height);
     }
   };
 
@@ -104,13 +101,13 @@ const main = () => {
     resetAnimation('closeScale');
 
     dialogAnimationCallback = () => {
-      if (callback) {
-        callback();
-      }
-
       const hideCheckbox = document.getElementById("checkboxHide");
       if (!hideCheckbox.checked) {
         hideCheckbox.click();
+      }
+
+      if (callback) {
+        callback();
       }
     };
   }
@@ -190,7 +187,9 @@ const main = () => {
       typewriter.nextPage(); // Closes dialog box
       if (currentDialogLine < dialogLines.length - 1) {
         currentDialogLine += 1;
-        openDialogBox(dialogLines[currentDialogLine]);
+        closeDialogBox(() => {
+          openDialogBox(dialogLines[currentDialogLine]);
+        });
       } else {
         dialogLines = [];
         closeDialogBox();
@@ -223,9 +222,15 @@ const main = () => {
     closeOnLastPage = event.target.checked;
   };
   closeOnLastPage = closeOnLastCheckbox.checked;
+
+  const backgroundColorpicker = document.getElementById("colorBackground");
+  backgroundColorpicker.onchange = (event) => {
+    document.body.style.setProperty("--backgroundColor", event.target.value);
+  };
+  backgroundColorpicker.value = "#ADFF2F"; // GreenYellow
 };
 
-window.addEventListener('DOMContentLoaded', (event) => {
+window.addEventListener("DOMContentLoaded", (event) => {
   console.log('DOM fully loaded and parsed');
   main();
 });

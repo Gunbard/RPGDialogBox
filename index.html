@@ -10,9 +10,11 @@
     </head>
     <body>
         <div id="mainContent">
-            <div id="controlsContainer">
+            <div id="controlsContainer">            
+                <h3>RPG Dialog Box Generator</h3>
                 Width: <input type="range" min="16" max="800" value="400" class="SliderSize" id="rangeWidth"><br>
                 Height: <input type="range" min="16" max="600" value="100" class="SliderSize" id="rangeHeight"><br>
+                <label>Background Color: <input type="color" id="colorBackground"></label><br>
                 Quick text: <input type="text" id="inputQuick" size="50"><br>
                 Dialog text:<br>
                 <textarea id="dialogInput" rows="8" cols="50"></textarea><br>
@@ -29,9 +31,6 @@
                 <label><input type="checkbox" id="checkboxPaging" checked>Page on double newlines</label>
                 <label><input type="checkbox" id="checkboxCloseOnLast" checked>Close on last line</label><br>
             </div>
-            
-            <br><br>
-            
             <div class="centerAlign">
                 <div id="dialogContainer">
                     <div id="mainDialog" class="animateScale"></div>
