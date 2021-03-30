@@ -10,27 +10,41 @@
     </head>
     <body>
         <div id="mainContent">
-            <div id="controlsContainer">            
-                <h3>RPG Dialog Box Generator</h3>
-                Width: <input type="range" min="16" max="800" value="400" class="SliderSize" id="rangeWidth"><br>
-                Height: <input type="range" min="16" max="600" value="100" class="SliderSize" id="rangeHeight"><br>
-                <label>Background Color: <input type="color" id="colorBackground"></label><br>
-                Quick text: <input type="text" id="inputQuick" size="50"><br>
-                Dialog text:<br>
-                <textarea id="dialogInput" rows="8" cols="50"></textarea><br>
-                <input type="button" value="Update" id="buttonUpdate">
-                <input type="button" value="Reset" id="buttonReset">
-                <input type="button" value="Clear" id="buttonClear">
-                <input type="button" value="Open" id="buttonOpen">
-                <input type="button" value="Close" id="buttonClose">
-                <input type="button" value="Prev" id="buttonPrev">
-                <input type="button" value="Next" id="buttonNext">
-                <br>
-                <label><input type="checkbox" id="checkboxHide">Hide</label>
-                <label><input type="checkbox" id="checkboxReopen" checked>Reopen on new text</label>
-                <label><input type="checkbox" id="checkboxPaging" checked>Page on double newlines</label>
-                <label><input type="checkbox" id="checkboxCloseOnLast" checked>Close on last line</label><br>
+            <div id="controlsContainer">
+                <div id="controls">        
+                    <h3>RPG Dialog Box Generator</h3>
+                    Width: <input type="range" min="16" max="800" value="400" class="SliderSize" id="rangeWidth"><br>
+                    Height: <input type="range" min="16" max="600" value="100" class="SliderSize" id="rangeHeight"><br>
+                    <label>Background Color: <input type="color" id="colorBackground"></label><br>
+                    Quick text: <input type="text" id="inputQuick" size="50"><br>
+                    Dialog text:<br>
+                    <textarea id="dialogInput" rows="8" cols="50"></textarea><br>
+                    <input type="button" value="Update" id="buttonUpdate">
+                    <input type="button" value="Reset" id="buttonReset">
+                    <input type="button" value="Clear" id="buttonClear">
+                    <input type="button" value="Open" id="buttonOpen">
+                    <input type="button" value="Close" id="buttonClose">
+                    <input type="button" value="Prev" id="buttonPrev">
+                    <input type="button" value="Next" id="buttonNext">
+                    <br>
+                    <label><input type="checkbox" id="checkboxHide">Hide</label>
+                    <label><input type="checkbox" id="checkboxReopen" checked>Reopen on new text</label>
+                    <label><input type="checkbox" id="checkboxPaging" checked>Page on double newlines</label>
+                    <label><input type="checkbox" id="checkboxCloseOnLast" checked>Close on last line</label>
+                </div>
+                <div id="info">
+                    <h5>Dialog box directives</h5> Tags that can control dialog box behavior. Tags must be at the beginning of a line.<br><br>
+                    Currently supported tags:<br><br>
+                    &lt;new&gt; - Re-opens the dialog box. Should not be on first line.
+                    <p class="monospaced">
+                        Rinoa<br>
+                        "You best looking in room!!"<br>
+                        &lt;new&gt;Cloud<br>
+                        "...Whatever."
+                    </p>
+                </div>
             </div>
+
             <div class="centerAlign">
                 <div id="dialogContainer">
                     <div id="mainDialog" class="animateScale"></div>

@@ -38,9 +38,11 @@ const main = () => {
     dialogText = dialogText.replaceAll("<br><new>", "<new>");
     dialogLines = dialogText.split("<new>");
 
-    dialogLines = dialogLines.map((dialogLine) => {
-      return dialogLine.split("<br><br>");
-    });
+    if (pageOnNewlines) {
+      dialogLines = dialogLines.map((dialogLine) => {
+        return dialogLine.split("<br><br>");
+      });
+    } 
 
     openDialogBox(dialogLines[currentDialogLine]);
   };

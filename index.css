@@ -13,19 +13,34 @@ input[type=button] {
 }
 
 .centerAlign {
-  display: flex;
   align-items: center;
+  display: flex;
   justify-content: center;
-  height: 50%;
+  height: 30%;
+}
+
+.monospaced {
+  font-family: 'Courier New', monospace;
 }
 
 #controlsContainer {
-  display: inline-block;
+  display: flex;
+  width: 100%;
+}
+
+#controls {
+  flex-shrink: 2;
+  padding: 10px;
+}
+
+#info {
+  flex-shrink: 1;
   padding: 10px;
 }
 
 #mainContent {
   height: 100%;
+  width: 100%;
 }
 
 #mainDialog {
