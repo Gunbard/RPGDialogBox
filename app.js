@@ -230,6 +230,12 @@ const main = () => {
     document.body.style.setProperty("--backgroundColor", event.target.value);
   };
   backgroundColorpicker.value = "#ADFF2F"; // GreenYellow
+
+  const dialogBoxColorpicker = document.getElementById("colorDialogBox");
+  dialogBoxColorpicker.onchange = (event) => {
+    mainDialog.style.setProperty("--dialogBoxColor", event.target.value);
+  };
+  dialogBoxColorpicker.value = "#1E90FF"; // DodgerBlue
 };
 
 window.addEventListener("DOMContentLoaded", (event) => {

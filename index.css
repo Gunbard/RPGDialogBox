@@ -45,17 +45,18 @@ input[type=button] {
 
 #mainDialog {
   background-clip: padding-box;
-  background-color: dodgerblue;
-  border-width: 16px;
+  background-color: var(--dialogBoxColor, dodgerblue);
+  border-width: 8px;
   border-style: solid;
   border-image: url("border.gif");
-  border-image-repeat: stretch;
-  border-image-slice: 8;
+  border-image-repeat: repeat;
+  border-image-slice: 10;
+  border-image-width: 16px;
   color: white;
   font-family: 'Trebuchet MS', sans-serif;
   font-size: x-large;
   image-rendering: crisp-edges;
-  padding: 4px;
+  padding: 8px;
   text-shadow: 2px 2px 1px black;
 }
 
