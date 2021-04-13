@@ -6,6 +6,7 @@ const main = () => {
   let reopenOnInput = false;
   let pageOnNewlines = false;
   let closeOnLastPage = false;
+  let autoAdvance = false;
   let dialogLines = [];
   let currentDialogLine = 0;
 
@@ -18,6 +19,13 @@ const main = () => {
       }
       case TW_STATE.STOPPED: {
         moreTextIcon.style.visibility = event.lastPage ? "hidden" : "visible";
+        if (autoAdvance) {
+          // Determine delay based on length of text (longer text = longer delay)
+          let delay = 3000 + (mainDialog.innerHTML.length * 50); // 50ms/character
+          setTimeout(() => {
+            nextButton.click();
+          }, delay);
+        }
         break;
       }
       case TW_STATE.FINISHED: {
@@ -122,6 +130,8 @@ const main = () => {
     }
   });
 
+  // EVENT REGISTRATION
+
   const sizeSliders = document.getElementsByClassName("SliderSize");
   for (let slider of sizeSliders) {
     slider.oninput = () => {
@@ -144,6 +154,8 @@ const main = () => {
 
   const dialogInput = document.getElementById("dialogInput");
   
+  // Buttons
+
   const resetButton = document.getElementById("buttonReset");
   resetButton.onclick = () => {
     typewriter.reset();
@@ -201,6 +213,8 @@ const main = () => {
     }
   }
   
+  // Checkboxes
+
   const hideCheckbox = document.getElementById("checkboxHide");
   hideCheckbox.onclick = (event) => {
     mainDialog.style.visibility = event.target.checked ? "hidden" : "visible";
@@ -224,6 +238,14 @@ const main = () => {
     closeOnLastPage = event.target.checked;
   };
   closeOnLastPage = closeOnLastCheckbox.checked;
+
+  const checkboxAuto = document.getElementById("checkboxAuto");
+  checkboxAuto.onclick = (event) => {
+    autoAdvance = event.target.checked;
+  };
+  autoAdvance = checkboxAuto.checked;
+
+  // Color pickers
 
   const backgroundColorpicker = document.getElementById("colorBackground");
   backgroundColorpicker.onchange = (event) => {
