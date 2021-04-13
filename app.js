@@ -9,6 +9,7 @@ const main = () => {
   let autoAdvance = false;
   let dialogLines = [];
   let currentDialogLine = 0;
+  let autoAdvanceTimeout = undefined;
 
   const typewriterEventCallback = (event) => {
     const moreTextIcon = document.getElementById("moreTextIcon");
@@ -22,7 +23,12 @@ const main = () => {
         if (autoAdvance) {
           // Determine delay based on length of text (longer text = longer delay)
           let delay = 3000 + (mainDialog.innerHTML.length * 50); // 50ms/character
-          setTimeout(() => {
+          
+          if (autoAdvanceTimeout) {
+            clearTimeout(autoAdvanceTimeout);
+          }
+
+          autoAdvanceTimeout = setTimeout(() => {
             nextButton.click();
           }, delay);
         }
