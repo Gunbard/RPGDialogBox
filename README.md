@@ -3,6 +3,8 @@ It's literally a dialog box from some RPG
 
 ![Sample, totally real world dialog](/readme-img/sample.gif)
 
+See/use it live here: https://gunbard.github.io/RPGDialogBox/
+
 ### Features
 - Typewriter-style text with automatic word-based line breaks (so a word doesn't move to a new line while it's being typed)
 - Page breaks
@@ -10,6 +12,7 @@ It's literally a dialog box from some RPG
 - Auto page advancing
 - Custom background and dialog box colors (for color keying, etc.)
 - Quick text input control to immediately show dialog (for chatting, etc.)
+- Written in vanilla ES6 JS
 
 ### Running
 - Download repo zip or from latest releases
