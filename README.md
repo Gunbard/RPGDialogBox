@@ -1,9 +1,9 @@
 # RPGDialogBox
-It's literally a dialog box from some RPG
+It's literally a dialog box from some RPG.
+See/use it live here: https://gunbard.github.io/RPGDialogBox/
 
 ![Sample, totally real world dialog](/readme-img/sample.gif)
 
-See/use it live here: https://gunbard.github.io/RPGDialogBox/
 
 ### Features
 - Typewriter-style text with automatic word-based line breaks (so a word doesn't move to a new line while it's being typed)
