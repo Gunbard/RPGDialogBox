@@ -167,6 +167,16 @@ const main = () => {
     typewriter.reset();
   };  
 
+  const updateFontButton = document.getElementById("buttonUpdateFont");
+  const fontInput = document.getElementById("inputFont");
+  const fontInputSize = document.getElementById("inputFontSize");
+  const fontInputBold = document.getElementById("checkboxFontBold");
+  updateFontButton.onclick = () => {
+    mainDialog.style.fontFamily = fontInput.value;
+    mainDialog.style.fontSize = fontInputSize.value;
+    mainDialog.style.fontWeight = fontInputBold.checked ? "bold" : "";
+  };
+
   const updateButton = document.getElementById("buttonUpdate");
   updateButton.onclick = () => {
     let newText = dialogInput.value.replace(/\r?\n/g, "<br>"); // Convert newlines in textarea
@@ -264,6 +274,12 @@ const main = () => {
     mainDialog.style.setProperty("--dialogBoxColor", event.target.value);
   };
   dialogBoxColorpicker.value = "#1E90FF"; // DodgerBlue
+
+  const fontColorpicker = document.getElementById("colorFont");
+  fontColorpicker.onchange = (event) => {
+    mainDialog.style.setProperty("--fontColor", event.target.value);
+  };
+  fontColorpicker.value = "#FFFFFF"; // White
 };
 
 window.addEventListener("DOMContentLoaded", (event) => {

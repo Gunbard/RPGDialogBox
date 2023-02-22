@@ -52,7 +52,7 @@ input[type=button] {
   border-image-repeat: repeat;
   border-image-slice: 10;
   border-image-width: 16px;
-  color: white;
+  color: var(--fontColor, white);
   font-family: 'Trebuchet MS', sans-serif;
   font-size: x-large;
   image-rendering: crisp-edges;
